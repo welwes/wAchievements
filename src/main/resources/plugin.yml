@@ -1,0 +1,4 @@
+name: wAchievements
+version: '${project.version}'
+main: ua.welwes.wachievements.WAchievements
+api-version: '1.16'
