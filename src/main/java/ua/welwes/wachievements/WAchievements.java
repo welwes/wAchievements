@@ -1,8 +1,10 @@
 package ua.welwes.wachievements;
 
+import org.bukkit.World;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerAdvancementDoneEvent;
+import org.bukkit.event.world.WorldLoadEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class WAchievements extends JavaPlugin implements Listener {
@@ -20,11 +22,14 @@ public class WAchievements extends JavaPlugin implements Listener {
         getLogger().info("Build b1.0 // sub in tg @welwesqq");
     }
 
-    @EventHandler
-    public void Achievements(PlayerAdvancementDoneEvent event) {
-        event.getPlayer().getWorld().getPlayers().forEach(player -> {
-            player.hidePlayer(this, event.getPlayer());
-            player.showPlayer(this, event.getPlayer());
-        });
+    private void hideAdvancementsFor(World world) {
+        world.setGameRuleValue("announceAdvancements", "false");
+        getLogger().info("Achievements are now hidden for world '" + world.getName() + "'.");
+    }
+
+    /* Hide advancements for new worlds */
+    @EventHandler(priority = EventPriority.MONITOR)
+    public void onWorldLoad(WorldLoadEvent event) {
+        hideAdvancementsFor(event.getWorld());
     }
 }
